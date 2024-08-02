@@ -1,54 +1,44 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import router from "@/router";
+import { useAuthStore } from "@/stores/auth";
 
+const auth = useAuthStore();
 const username = ref(null);
 const password = ref(null);
 
-function login() {
-  // Send a POST request
-  axios.get("/sanctum/csrf-cookie").then((response) => {
-    axios
-      .post("/auth/login", {
-        username: this.username,
-        password: this.password,
-      })
-      .catch(({ response }) => {
-        console.log("catch: ", response);
-      })
-      .then((response) => {
-        console.log("then: ", response);
-      });
-  });
+function loginUser() {
+  auth.loginUser(this.username, this.password);
 }
 
-function getUser() {
-  console.log("localStorage: ", localStorage);
-  axios.get("/api/user").then((response) => {
-    console.log(response.data);
-  });
-}
-
-function logoutUser() {
-  axios.post("/auth/logout").then((response) => {
-    console.log(response.data);
-  });
-}
 </script>
 
 <template>
   <main>
-    <!-- <TheWelcome /> -->
-    <h1>Login</h1>
+    <div class="flex justify-content-center">
+      <form @submit.prevent="loginUser()" class="">
+        <h1>Login</h1>
+        <IconField class="m-2">
+          <InputIcon class="pi pi-user" />
+          <InputText v-model="username" placeholder="Username" />
+        </IconField>
 
-    <form @submit.prevent="login()">
-      <input type="text" name="username" v-model="username" /> <br />
-      <input type="password" name="password" v-model="password" /> <br />
-      <button type="submit">Login</button>
-    </form>
-
-    <!-- <button type="button" @click="getUser()">Get Usesr</button>
-    <br />
-    <button type="button" @click="logoutUser()">Logout</button> -->
+        <IconField class="m-2">
+          <InputIcon class="pi pi-key" />
+          <InputText
+            type="password"
+            v-model="password"
+            placeholder="Password"
+          />
+        </IconField>
+        <Button
+          class="m-2 mt-0"
+          type="submit"
+          label="Login"
+          icon="pi pi-sign-in"
+        ></Button>
+      </form>
+    </div>
   </main>
 </template>

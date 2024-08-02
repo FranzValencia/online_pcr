@@ -2,6 +2,8 @@ import "./assets/main.css";
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import PrimeVue from "primevue/config";
+import Aura from "@primevue/themes/aura";
 
 import App from "./App.vue";
 import router from "./router";
@@ -9,6 +11,16 @@ import axios from "axios";
 // import VueAxios from "vue-axios";
 
 const app = createApp(App);
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+    options: {
+      prefix: "p",
+      darkModeSelector: "system",
+      cssLayer: false,
+    },
+  },
+});
 
 // import axios from 'axios';
 
@@ -17,13 +29,6 @@ axios.defaults.baseURL = "http://192.168.50.51:89";
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
-
-// axios.interceptors.request.use((config) => {
-//   if (store.getters.token){ // or get it from localStorage
-//     config.headers["Authorization"] = "Bearer " + store.getters.token
-//   }
-//   return config
-// })
 
 axios.interceptors.response.use(
   function (response) {
@@ -34,25 +39,36 @@ axios.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    console.log("interceptors error: ", error.response);
+    // console.log("interceptors error: ", error.response.status);
     // popout login dialog if error code == 401
+    if (error.response.status == 401) {
+      router.push("/login", { replace: true });
+    }
+
     return Promise.reject(error);
   }
 );
 
-// headers: {
-//     'Accept': 'application/json',
-//     'Content-Type': 'application/json',
-//     'Access-Control-Allow-Origin': 'true'
-//   }
-
-// axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-// axios.defaults.headers.common['X-CSRF-TOKEN'] = Laravel.csrfToken;
-
 axios.defaults.baseURL = "http://192.168.50.51:89";
-
-// app.use(axios);
 app.use(createPinia());
 app.use(router);
-
 app.mount("#app");
+
+import "/node_modules/primeflex/primeflex.css";
+import "primeicons/primeicons.css";
+
+// for auth
+
+import { useAuthStore } from "./stores/auth";
+const auth = useAuthStore();
+
+router.beforeEach(async (to, from) => {
+  if (to.name == "login") return;
+  if (to.meta.requiresAuth) {
+    await auth.getUser().then(() => {
+      if (!auth.isAuthenticated) {
+        return { name: "login" };
+      }
+    });
+  }
+});
