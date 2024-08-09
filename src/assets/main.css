@@ -1,11 +1,16 @@
-/* @import './base.css'; */
+@import "/node_modules/primeflex/primeflex.css";
+@import "primeflex/themes/primeone-light.css";
+@import "primeicons/primeicons.css";
 
 @font-face {
   font-family:'proximanova_light';
   src: url('@/assets/fonts/proximanova_light.otf');
 }
 
-#app {
-  font-family: 'proximanova_light';
-
+body {
+  font-family: 'proximanova_light' !important;
 }
+
+/* #app {
+  font-family: 'proximanova_light';
+} */

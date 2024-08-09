@@ -21,10 +21,17 @@ const router = createRouter({
       component: Dashboard,
       meta: { requiresAuth: true },
     },
+
     {
       path: "/rsm",
       name: "rsm",
       component: () => import("@/views/RSM/Index.vue"),
+      meta: { requiresAuth: true, requiresRsm: true },
+    },
+    {
+      path: "/rsm/:id",
+      name: "rsm_editor",
+      component: () => import("@/views/RSM/RatingScaleMatrix.vue"),
       meta: { requiresAuth: true, requiresRsm: true },
     },
     {

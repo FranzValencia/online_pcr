@@ -3,22 +3,20 @@ import "./assets/main.css";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import PrimeVue from "primevue/config";
+import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
+
+
 import Aura from "@primevue/themes/aura";
 
 import App from "./App.vue";
 import router from "./router";
 import axios from "axios";
-// import VueAxios from "vue-axios";
 
 const app = createApp(App);
 app.use(PrimeVue, {
   theme: {
     preset: Aura,
-    options: {
-      prefix: "p",
-      darkModeSelector: "system",
-      cssLayer: false,
-    },
   },
 });
 
@@ -50,14 +48,12 @@ axios.interceptors.response.use(
 );
 
 axios.defaults.baseURL = "http://192.168.50.51:89";
+app.use(ToastService);
+app.use(ConfirmationService);
+
 app.use(createPinia());
 app.use(router);
 app.mount("#app");
-
-import "/node_modules/primeflex/primeflex.css";
-import "primeicons/primeicons.css";
-
-// for auth
 
 import { useAuthStore } from "./stores/auth";
 const auth = useAuthStore();
