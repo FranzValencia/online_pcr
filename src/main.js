@@ -3,9 +3,8 @@ import "./assets/main.css";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import PrimeVue from "primevue/config";
-import ToastService from 'primevue/toastservice';
-import ConfirmationService from 'primevue/confirmationservice';
-
+import ToastService from "primevue/toastservice";
+import ConfirmationService from "primevue/confirmationservice";
 
 import Aura from "@primevue/themes/aura";
 
@@ -15,6 +14,7 @@ import axios from "axios";
 
 const app = createApp(App);
 app.use(PrimeVue, {
+  ripple: true,
   theme: {
     preset: Aura,
   },

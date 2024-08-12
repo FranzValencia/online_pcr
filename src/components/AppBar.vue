@@ -70,16 +70,19 @@ function navigate(to) {
 </script>
 
 <template>
-  <Menubar :model="items"  v-if="auth.isAuthenticated">
+  <Menubar :model="items" v-if="auth.isAuthenticated">
     <template #start>
       <img src="/favicon.ico" alt="Online PCR" style="width: 50px" />
     </template>
-    <template #item="{ item, props, hasSubmenu, root }"  v-if="auth.isAuthenticated">
+    <template
+      #item="{ item, props, hasSubmenu, root }"
+      v-if="auth.isAuthenticated"
+    >
       <a
         v-ripple
         class="flex items-center"
         v-bind="props.action"
-        @click="navigate(item.to)"
+        @click.prevent="navigate(item.to)"
       >
         <span :class="item.icon" />
         <span class="ml-2">{{ item.label }}</span>
@@ -119,20 +122,19 @@ function navigate(to) {
           icon="pi pi-sign-out"
           aria-label="logout"
         />
-       
+
         <!-- <InputText placeholder="Search" type="text" class="w-32 sm:w-auto" />
         <Avatar
           image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
           shape="circle"
         /> -->
-        
       </div>
     </template>
   </Menubar>
-  <Menubar  v-else>
+  <Menubar v-else>
     <template #start>
-      <img src="/favicon.ico" alt="Online PCR" style="width: 50px" /> <div class="mx-2">Online SPMS</div>
+      <img src="/favicon.ico" alt="Online PCR" style="width: 50px" />
+      <div class="mx-2">Online SPMS</div>
     </template>
   </Menubar>
-
 </template>
