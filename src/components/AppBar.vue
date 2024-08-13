@@ -83,6 +83,7 @@ function navigate(to) {
         class="flex items-center"
         v-bind="props.action"
         @click.prevent="navigate(item.to)"
+        tabindex="-1"
       >
         <span :class="item.icon" />
         <span class="ml-2">{{ item.label }}</span>
