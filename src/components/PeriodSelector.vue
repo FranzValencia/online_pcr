@@ -69,6 +69,7 @@
               class="w-full"
             />
             <Button
+              type="button"
               label="Open"
               icon="pi pi-folder-open"
               class="px-8"
@@ -109,8 +110,8 @@ function goTo() {
     })
     .then(({ data }) => {
       const goto = props.path + "/" + data;
-      // console.log(goto);
-      if (!data) return false;
+      console.log(data);
+      // if (!data) return false;
       router.push(goto, { replace: true });
     });
 }

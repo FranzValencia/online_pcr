@@ -78,12 +78,11 @@ function navigate(to) {
       #item="{ item, props, hasSubmenu, root }"
       v-if="auth.isAuthenticated"
     >
-      <a
+      <Button
+        text
         v-ripple
         class="flex items-center"
-        v-bind="props.action"
         @click.prevent="navigate(item.to)"
-        tabindex="-1"
       >
         <span :class="item.icon" />
         <span class="ml-2">{{ item.label }}</span>
@@ -104,7 +103,7 @@ function navigate(to) {
             { 'pi-angle-down ml-2': root, 'pi-angle-right ml-auto': !root },
           ]"
         ></i>
-      </a>
+      </Button>
     </template>
 
     <template #end>
