@@ -6,14 +6,22 @@ import MfoParentEditor from "./MfoParentEditor.vue";
 import { useRsmStore } from "@/stores/rsm";
 import { useRoute } from "vue-router";
 
-const rsm = useRsmStore();
-
 const props = defineProps(["mfo"]);
-const position = ref("center");
-const visible = ref(false);
+
+const rsm = useRsmStore();
 const toast = useToast();
 const confirm = useConfirm();
 const route = useRoute();
+
+const visible = ref(false);
+const position = ref("center");
+
+const newSubMfo = ref({
+  period_id: route.params.id,
+  parent_id: props.mfo.cf_ID,
+  cf_count: "",
+  cf_title: "",
+});
 
 const openPosition = (pos) => {
   position.value = pos;
@@ -73,6 +81,14 @@ const showTemplate = (event) => {
     },
   });
 };
+
+const addSubMfo = async () => {
+  await rsm.addSubMfo(newSubMfo.value).then(() => {
+    newSubMfo.value.cf_count = "";
+    newSubMfo.value.cf_title = "";
+    visible.value = false;
+  });
+};
 </script>
 
 <template>
@@ -104,6 +120,7 @@ const showTemplate = (event) => {
           type="text"
           placeholder="eg: A., A.01..."
           v-model="props.mfo.cf_count"
+          autocomplete="off"
         />
       </div>
       <div class="p-2 w-full">
@@ -114,6 +131,7 @@ const showTemplate = (event) => {
           type="text"
           placeholder="eg: Facilitate the Collection / Submission of DPCR / SPCR IPCR (July 2021 - December 2021)"
           v-model="props.mfo.cf_title"
+          autocomplete="off"
         />
       </div>
       <div class="p-1">
@@ -152,7 +170,8 @@ const showTemplate = (event) => {
     <Divider align="center" type="solid">
       <b>Add Sub MFO</b>
     </Divider>
-    <div class="flex">
+
+    <form class="flex" @submit.prevent="addSubMfo">
       <div class="p-2 w-4">
         <label for="codeOrder">Code: </label>
         <InputText
@@ -160,6 +179,8 @@ const showTemplate = (event) => {
           id="codeOrder"
           type="text"
           placeholder="eg: A., A.01..."
+          v-model="newSubMfo.cf_count"
+          autocomplete="off"
         />
       </div>
       <div class="p-2 w-full">
@@ -169,18 +190,20 @@ const showTemplate = (event) => {
           id="mfoTitle"
           type="text"
           placeholder="eg: Facilitate the Collection / Submission of DPCR / SPCR IPCR (July 2021 - December 2021)"
+          v-model="newSubMfo.cf_title"
+          autocomplete="off"
         />
       </div>
       <div class="p-1">
         <br />
         <Button
           class="mt-2"
-          type="button"
+          type="submit"
           label="Add"
           icon="pi pi-plus"
         ></Button>
       </div>
-    </div>
+    </form>
 
     <!-- delete mfo -->
     <Divider align="center" type="solid">

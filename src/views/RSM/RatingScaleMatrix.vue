@@ -162,7 +162,7 @@ const showTemplate = (event, si, i, s) => {
       </tr>
     </thead>
 
-    <template v-if="!isEmpty" v-for="(row, i) in rsm ? rsm.rows : []">
+    <template v-if="!rsm.isEmpty" v-for="(row, i) in rsm ? rsm.rows : []">
       <!-- 
       | if row has no success indicator
       | 

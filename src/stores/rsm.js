@@ -1,10 +1,11 @@
-import { ref, computed } from "vue";
+import { ref, computed, toRaw } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
 
 export const useRsmStore = defineStore("rsm", () => {
   const department = ref("");
   const period = ref("");
+  const isEmpty = ref(false);
   const rows = ref([]);
 
   async function getTitle(period_id) {
@@ -23,13 +24,14 @@ export const useRsmStore = defineStore("rsm", () => {
       rows.value = res.data.rows;
     } catch (err) {
       console.log("useRsmStore getRows err: ", err);
+    } finally {
+      isEmpty.value = rows.value.length < 1 ? true : false;
     }
   }
 
   async function deleteMfo(cf_ID, period_id) {
     try {
       const res = await axios.delete("/api/mfo/" + cf_ID);
-      console.log(res.data);
     } catch (error) {
       console.log("useRsmStore deleteMfo err: ", error);
     } finally {
@@ -49,10 +51,16 @@ export const useRsmStore = defineStore("rsm", () => {
     }
   }
 
+  async function addSubMfo(newSubMfo) {
+    const newSubMfo_ = Object.assign({}, newSubMfo);
+    const res = await axios.post("/api/mfo/sub", newSubMfo);
+    getRows(newSubMfo.period_id);
+  }
+
   async function saveEditMfo(mfo) {
-    // console.log("saveEditMfo: ", mfo);
+    const mfo_ = Object.assign({}, mfo);
     try {
-      const res = await axios.patch("/api/mfo/" + mfo.cf_ID, mfo);
+      const res = await axios.patch("/api/mfo/" + mfo_.cf_ID, mfo_);
     } catch (error) {
       console.log("useRsmStore addNewMfo err: ", error);
     } finally {
@@ -63,11 +71,13 @@ export const useRsmStore = defineStore("rsm", () => {
   return {
     department,
     period,
+    isEmpty,
     rows,
     getTitle,
     getRows,
     addNewMfo,
     deleteMfo,
     saveEditMfo,
+    addSubMfo,
   };
 });
