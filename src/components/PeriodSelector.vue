@@ -102,8 +102,8 @@ const periods = ref([
   { name: "July - December", code: "July - December" },
 ]);
 
-function goTo() {
-  axios
+async function goTo() {
+  await axios
     .post("/api/getPeriodId", {
       selectedPeriod: this.selectedPeriod.code,
       selectedYear: this.selectedYear.code,
