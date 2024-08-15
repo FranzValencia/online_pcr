@@ -21,12 +21,20 @@ const openPosition = (pos) => {
 };
 
 const saveMfoEdit = () => {
-  toast.add({
-    severity: "success",
-    summary: "Saved",
-    detail: "MFO edit/s saved!",
-    life: 3000,
-  });
+  rsm
+    .saveEditMfo({
+      cf_ID: props.mfo.cf_ID,
+      cf_count: props.mfo.cf_count,
+      cf_title: props.mfo.cf_title,
+    })
+    .then(() => {
+      toast.add({
+        severity: "success",
+        summary: "Saved",
+        detail: "MFO edit/s saved!",
+        life: 3000,
+      });
+    });
 };
 
 const showTemplate = (event) => {
@@ -76,10 +84,11 @@ const showTemplate = (event) => {
 
   <Dialog
     v-model:visible="visible"
-    header="Edit MFO"
+    :header="`${props.mfo.cf_count} ${props.mfo.cf_title}`"
     :position="position"
     :modal="true"
     :draggable="false"
+    style="max-width: 700px"
   >
     <!-- {{ props.mfo }} -->
     <!-- FORM START -->

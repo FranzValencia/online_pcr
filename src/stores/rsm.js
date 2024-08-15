@@ -42,11 +42,21 @@ export const useRsmStore = defineStore("rsm", () => {
       const res = await axios.post("/api/mfo", {
         newMfo: newMfo,
       });
-      // console.log(res.data);
     } catch (error) {
       console.log("useRsmStore addNewMfo err: ", error);
     } finally {
       getRows(newMfo.period_id);
+    }
+  }
+
+  async function saveEditMfo(mfo) {
+    // console.log("saveEditMfo: ", mfo);
+    try {
+      const res = await axios.patch("/api/mfo/" + mfo.cf_ID, mfo);
+    } catch (error) {
+      console.log("useRsmStore addNewMfo err: ", error);
+    } finally {
+      // getRows(newMfo.period_id);
     }
   }
 
@@ -58,5 +68,6 @@ export const useRsmStore = defineStore("rsm", () => {
     getRows,
     addNewMfo,
     deleteMfo,
+    saveEditMfo,
   };
 });

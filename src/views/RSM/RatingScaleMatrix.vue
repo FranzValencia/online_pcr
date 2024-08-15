@@ -216,7 +216,15 @@ const showTemplate = (event, si, i, s) => {
               <PerformanceMeasures :measure="si.timeliness" />
             </td>
             <td>
-              {{ si.personnel }}
+              <!-- {{ si.personnel }} -->
+              <template v-for="person in si.personnel">
+                <Button
+                  text
+                  :label="person.full_name"
+                  size="small"
+                  class="w-full p-1 text-blue-700"
+                ></Button>
+              </template>
             </td>
             <td style="vertical-align: middle">
               <div class="gap-1">
