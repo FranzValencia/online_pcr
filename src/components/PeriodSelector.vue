@@ -39,13 +39,21 @@
               placeholder="Select year"
               style="width: 185px"
             />
-            <Button
+            <!-- <Button
               label="Open"
               icon="pi pi-folder-open"
               class="px-3"
               @click="goTo()"
               :disabled="!selectedPeriod || !selectedYear"
-            ></Button>
+            ></Button> -->
+
+            <RouterLink :to="'/rsm/' + period_id"
+              ><Button
+                :disabled="!selectedPeriod || !selectedYear"
+                type="button"
+                >Open</Button
+              ></RouterLink
+            >
           </div>
         </template>
 
@@ -68,14 +76,21 @@
               placeholder="Select year"
               class="w-full"
             />
-            <Button
+            <!-- <Button
               type="button"
               label="Open"
               icon="pi pi-folder-open"
               class="px-8"
               @click="goTo()"
               :disabled="!selectedPeriod || !selectedYear"
-            ></Button>
+            ></Button> -->
+            <RouterLink :to="'/rsm/' + period_id"
+              ><Button
+                type="button"
+                :disabled="!selectedPeriod || !selectedYear"
+                >Open</Button
+              ></RouterLink
+            >
           </div>
         </template>
       </template>
@@ -85,10 +100,11 @@
 <script setup>
 import router from "@/router";
 import axios from "axios";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const selectedYear = ref();
 const selectedPeriod = ref();
+const period_id = ref();
 
 const props = defineProps(["title", "subtitle", "path"]);
 
@@ -102,17 +118,26 @@ const periods = ref([
   { name: "July - December", code: "July - December" },
 ]);
 
-async function goTo() {
+watch(selectedYear, (newValue, oldValue) => {
+  if (newValue && selectedPeriod.value) {
+    getPeriodId();
+  }
+});
+
+watch(selectedPeriod, (newValue, oldValue) => {
+  if (newValue && selectedYear.value) {
+    getPeriodId();
+  }
+});
+
+async function getPeriodId() {
   await axios
     .post("/api/getPeriodId", {
-      selectedPeriod: this.selectedPeriod.code,
-      selectedYear: this.selectedYear.code,
+      selectedPeriod: selectedPeriod.value.code,
+      selectedYear: selectedYear.value.code,
     })
     .then(({ data }) => {
-      const goto = props.path + "/" + data;
-      console.log(data);
-      // if (!data) return false;
-      router.push(goto, { replace: true });
+      period_id.value = data;
     });
 }
 </script>
