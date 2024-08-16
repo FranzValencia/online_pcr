@@ -3,6 +3,7 @@ import { ref, defineProps } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
 import MfoParentEditor from "./MfoParentEditor.vue";
+import SuccessIndicatorEditor from "./SuccessIndicatorEditor.vue";
 import { useRsmStore } from "@/stores/rsm";
 import { useRoute } from "vue-router";
 
@@ -151,12 +152,13 @@ const addSubMfo = async () => {
       <b>Success Indicator</b>
     </Divider>
     <div class="mt-2 flex justify-content-center">
-      <Button
+      <!-- <Button
         class="w-6"
         label="Add Success Indicator"
         icon="pi pi-plus"
         severity="info"
-      ></Button>
+      ></Button> -->
+      <SuccessIndicatorEditor :mfo="mfo" />
     </div>
     <!-- change mfo parent -->
     <Divider align="center" type="solid">
