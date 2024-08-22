@@ -1,11 +1,12 @@
 <script setup>
-import { ref, defineProps, reactive } from "vue";
+import axios from "axios";
+import { ref, defineProps, reactive, onMounted } from "vue";
 
 const props = defineProps(["mfo"]);
 const visible = ref(false);
-// const hasQuality = ref(false);
-// const hasEfficiency = ref(false);
-// const hasTimeliness = ref(false);
+const selectedEmployees = ref();
+const employees = ref([]);
+
 const metrics = ref([
   {
     name: "Quality",
@@ -21,9 +22,24 @@ const metrics = ref([
   },
 ]);
 
+function toggleTest() {
+  console.log((metrics.value[0].isChecked = !metrics.value[0].isChecked));
+}
+
 function showDialog() {
   visible.value = true;
 }
+
+async function getAllEmployees() {
+  const res = await axios.get("/api/getAllEmployees");
+  return res.data;
+}
+
+onMounted(() => {
+  getAllEmployees().then((data) => {
+    employees.value = data;
+  });
+});
 </script>
 <template>
   <Button
@@ -38,34 +54,70 @@ function showDialog() {
     class="w-full md:w-6 m-5"
     v-model:visible="visible"
     modal
-    header="Add Success Indicator for"
+    :header="`Add Success Indicator for - ${props.mfo.cf_count} ${props.mfo.cf_title}`"
   >
-    <div class="text-2xl mb-2">
+    <!-- <div class="text-2xl mb-2">
       {{ props.mfo.cf_count }} {{ props.mfo.cf_title }}
-    </div>
+    </div> -->
     <form @submit.prevent="" class="">
       <div class="p-2 w-full">
-        <label for="si">Success Indicator: </label>
+        <label class="font-semibold" for="si">Success Indicator: </label>
         <Textarea
           id="si"
           rows="5"
           placeholder="Enter success indicator here..."
-          class="w-full m-2"
+          class="w-full mx-2 mt-2"
         />
       </div>
-      <div class="flex items-center">
+
+      <!-- <Divider align="center" type="dotted"> Measures </Divider> -->
+      <div class="pl-2 w-full">
+        <label class="font-semibold" for="si">Measures: </label>
+      </div>
+      <div class="flex justify-content-left pl-2">
         <template v-for="(metric, m) in metrics">
           <div class="flex items-center m-2">
             <Checkbox
+              binary
               :inputId="metric.name"
               :name="metric.name"
-              v-model="metrics[0].isChecked"
+              v-model="metrics[m].isChecked"
             />
             <label :for="metric.name" class="ml-2">
               {{ metric.name }}
             </label>
           </div>
         </template>
+      </div>
+      <div class="justify-content-center m-3">
+        <template v-for="(metric, m) in metrics">
+          <div class="w-full m-3 font-semibold" v-if="metric.isChecked">
+            <div class="my-2">{{ metric.name }}</div>
+            <template v-for="score in 5">
+              <InputGroup>
+                <InputGroupAddon>
+                  <b>{{ 5 - score + 1 }}</b>
+                </InputGroupAddon>
+                <InputText />
+              </InputGroup>
+            </template>
+          </div>
+        </template>
+      </div>
+
+      <!-- in-charges -->
+      <div class="p-2 w-full">
+        <label class="font-semibold" for="si">Incharge: </label>
+        <MultiSelect
+          v-model="selectedEmployees"
+          display="chip"
+          :options="employees"
+          optionLabel="name"
+          filter
+          placeholder="Select employee/s in-charge"
+          :maxSelectedLabels="3"
+          class="w-full md:w-80"
+        />
       </div>
     </form>
     <div class="mt-3 flex justify-end gap-2">
