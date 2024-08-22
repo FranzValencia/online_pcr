@@ -39,7 +39,10 @@ axios.interceptors.response.use(
     // Do something with response error
     // console.log("interceptors error: ", error.response.status);
     // popout login dialog if error code == 401
-    if (error.response.status == 401) {
+    if (
+      error.response.status == 401 &&
+      router.currentRoute.value.name != "home"
+    ) {
       router.push("/login", { replace: true });
     }
 

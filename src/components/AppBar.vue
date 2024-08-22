@@ -1,8 +1,12 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
 const auth = useAuthStore();
+
+onMounted(() => {
+  console.log(auth.user);
+});
 
 const items = ref([
   {

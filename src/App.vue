@@ -4,9 +4,8 @@ import AppBar from "./components/AppBar.vue";
 </script>
 
 <template>
-  <AppBar />
+  <AppBar class="shadow-5" />
   <RouterView />
-
   <Toast />
   <ConfirmPopup group="templating">
     <template #message="slotProps">
@@ -22,3 +21,4 @@ import AppBar from "./components/AppBar.vue";
     </template>
   </ConfirmPopup>
 </template>
+

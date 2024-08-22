@@ -44,7 +44,7 @@ export const useAuthStore = defineStore("auth", () => {
       localStorage.setItem("user", null);
       this.isAuthenticated = false;
       this.user = null;
-      router.push("/login", { replace: true });
+      router.push("/", { replace: true });
     });
   }
 

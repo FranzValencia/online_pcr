@@ -9,6 +9,11 @@
 
 body {
   font-family: 'proximanova_light' !important;
+  background-image: url('@/assets/images/bg2020.jpg');
+  /* background-size:cover; */
+  background-size: 1920px 1498px;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* #app {
