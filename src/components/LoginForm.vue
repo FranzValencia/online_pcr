@@ -9,7 +9,7 @@ const username = ref(null);
 const password = ref(null);
 
 function loginUser() {
-  auth.loginUser(this.username, this.password);
+  auth.loginUser(username.value, password.value);
 }
 </script>
 
