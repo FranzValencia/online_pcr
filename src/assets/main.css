@@ -9,7 +9,7 @@
 
 body {
   font-family: 'proximanova_light' !important;
-  background-image: url('@/assets/images/bg2020.jpg');
+  background-image: url('@/assets/images/bg2020.png');
   /* background-size:cover; */
   background-size: 1920px 1498px;
   background-position: center;
