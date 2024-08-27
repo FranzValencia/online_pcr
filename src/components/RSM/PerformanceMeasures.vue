@@ -5,13 +5,13 @@ const props = defineProps(["measure"]);
 </script>
 
 <template>
-  <div class="m-0 my-1" v-for="count in 6">
-    <template v-if="props.measure && props.measure[6 - count]">
+  <div class="m-0 my-1" v-for="(count, i) in 6">
+    <template v-if="props.measure && props.measure[i]">
       <div class="w-full flex">
         <span style="text-wrap: nowrap">
-          <b>{{ 6 - count }}</b> -
+          <b>{{ 5 - i }}</b> -
         </span>
-        <div class="ml-2">{{ props.measure[6 - count] }}</div>
+        <div class="ml-2">{{ props.measure[count - 1] }}</div>
       </div>
     </template>
   </div>

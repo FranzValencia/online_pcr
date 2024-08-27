@@ -158,7 +158,7 @@ const addSubMfo = async () => {
         icon="pi pi-plus"
         severity="info"
       ></Button> -->
-      <SuccessIndicatorEditor :mfo="mfo" />
+      <SuccessIndicatorEditor :mfo="mfo" label="Add Success Indicator" icon="pi pi-plus"/>
     </div>
     <!-- change mfo parent -->
     <Divider align="center" type="solid">
