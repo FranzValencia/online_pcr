@@ -6,6 +6,7 @@ import PerformanceMeasures from "@/components/RSM/PerformanceMeasures.vue";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import MfoEditor from "@/components/RSM/MfoEditor.vue";
+import SuccessIndicatorEditor from "@/components/RSM/SuccessIndicatorEditor.vue";
 import { useRsmStore } from "@/stores/rsm";
 
 const rsm = useRsmStore();
@@ -228,13 +229,20 @@ const showTemplate = (event, si, i, s) => {
             </td>
             <td style="vertical-align: middle">
               <div class="gap-1">
-                <Button
+                <!-- <Button
                   @click="editSi(si)"
                   class="mt-2"
                   size="small"
                   icon="pi pi-pen-to-square"
                   severity="success"
-                ></Button>
+                ></Button> -->
+
+                <SuccessIndicatorEditor
+                  :mfo="row"
+                  :si="si"
+                  icon="pi pi-pen-to-square"
+                />
+
                 <Button
                   @click="showTemplate($event, si, i, s)"
                   icon="pi pi-trash"

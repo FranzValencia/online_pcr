@@ -2,10 +2,16 @@
 import axios from "axios";
 import { ref, defineProps, reactive, onMounted } from "vue";
 
-const props = defineProps(["mfo"]);
+const props = defineProps(["mfo", "si", "label", "icon"]);
 const visible = ref(false);
 const selectedEmployees = ref();
 const employees = ref([]);
+
+const inputs = ref({
+  mi_id: null,
+  cf_ID: null,
+  mi_succIn: null,
+});
 
 const metrics = ref([
   {
@@ -27,6 +33,9 @@ function toggleTest() {
 }
 
 function showDialog() {
+  inputs.value.mi_id = props.si.mi_id;
+  inputs.value.cf_ID = props.si.cf_ID;
+  inputs.value.mi_succIn = props.si.mi_succIn;
   visible.value = true;
 }
 
@@ -43,9 +52,8 @@ onMounted(() => {
 </script>
 <template>
   <Button
-    class="w-6"
-    label="Add Success Indicator"
-    icon="pi pi-plus"
+    :label="props.label"
+    :icon="props.icon"
     severity="info"
     @click="showDialog"
   ></Button>
@@ -56,6 +64,7 @@ onMounted(() => {
     modal
     :header="`Add Success Indicator for - ${props.mfo.cf_count} ${props.mfo.cf_title}`"
   >
+    {{ props.si }}
     <!-- <div class="text-2xl mb-2">
       {{ props.mfo.cf_count }} {{ props.mfo.cf_title }}
     </div> -->
