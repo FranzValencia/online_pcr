@@ -23,7 +23,7 @@ app.use(PrimeVue, {
 // import axios from 'axios';
 
 // Set a base URL for all requests
-axios.defaults.baseURL = "http://192.168.50.51:89";
+axios.defaults.baseURL = "http://192.168.50.51:90";
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
@@ -50,7 +50,7 @@ axios.interceptors.response.use(
   }
 );
 
-axios.defaults.baseURL = "http://192.168.50.51:89";
+axios.defaults.baseURL = "http://192.168.50.51:90";
 app.use(ToastService);
 app.use(ConfirmationService);
 

@@ -6,7 +6,7 @@
           <img
             class="w-full"
             alt="user header"
-            src="https://img.freepik.com/free-vector/isometric-iso-certification-concept_23-2148688049.jpg?t=st=1722839124~exp=1722842724~hmac=b90a53e769e83887ce53528cf256f628af13226b7db8182a0063a049393f1d79&w=996"
+            src="@/assets/images/isometric-iso-certification-concept_23-2148688049.jpg"
           />
         </div>
       </template>

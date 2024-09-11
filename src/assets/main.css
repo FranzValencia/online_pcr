@@ -13,7 +13,7 @@ body {
   /* background-size:cover; */
   background-size: 1920px 1498px;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat:repeat-y;
 }
 
 /* #app {

@@ -21,4 +21,3 @@ import AppBar from "./components/AppBar.vue";
     </template>
   </ConfirmPopup>
 </template>
-

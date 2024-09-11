@@ -104,12 +104,13 @@ const showTemplate = (event, si, i, s) => {
         // if (rsm.rows[i].num_si < 1) {
         //   rsm.rows[i].has_si = false;
         // }
-
-        toast.add({
-          severity: "success",
-          summary: "Deleted",
-          detail: "Success Indicator deleted!",
-          life: 3000,
+        rsm.getRows(route.params.id).then(() => {
+          toast.add({
+            severity: "success",
+            summary: "Deleted",
+            detail: "Success Indicator deleted!",
+            life: 3000,
+          });
         });
       });
     },
@@ -126,7 +127,7 @@ const showTemplate = (event, si, i, s) => {
 </script>
 
 <template>
-  <div class="mt-3">
+  <div class="header">
     <h1 class="m-0 w-full flex align-items-center justify-content-center">
       Rating Scale Matrix
     </h1>
@@ -149,7 +150,7 @@ const showTemplate = (event, si, i, s) => {
     </div>
   </template>
 
-  <table v-else class="mt-5 w-full">
+  <table v-else class="w-full">
     <thead>
       <tr>
         <th>MFO</th>
@@ -194,24 +195,26 @@ const showTemplate = (event, si, i, s) => {
               >
                 <p class="m-0">
                   <MfoEditor :mfo="row" />
+                  <!-- has_si: {{ row.has_si }} -->
                   {{ row.cf_count }}
                   {{ row.cf_title }}
                 </p>
               </div>
             </td>
             <td>
+              <!-- {{ row }} -->
               {{ si.mi_succIn }}
             </td>
             <td>
               <div class="m-0">{{ si.quality ? "Quality" : "" }}</div>
-              <div class="m-0">{{ si.effeciency ? "Efficiency" : "" }}</div>
+              <div class="m-0">{{ si.efficiency ? "Efficiency" : "" }}</div>
               <div class="m-0">{{ si.timeliness ? "Timeliness" : "" }}</div>
             </td>
             <td style="vertical-align: text-top !important">
               <PerformanceMeasures :measure="si.quality" />
             </td>
             <td style="vertical-align: text-top !important">
-              <PerformanceMeasures :measure="si.effeciency" />
+              <PerformanceMeasures :measure="si.efficiency" />
             </td>
             <td style="vertical-align: text-top !important">
               <PerformanceMeasures :measure="si.timeliness" />
@@ -304,10 +307,18 @@ const showTemplate = (event, si, i, s) => {
 </template>
 
 <style>
+.header {
+  background-color: white;
+  margin-top: 10px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
 table,
 tr,
 th,
 td {
+  background-color: white;
   border: 1px solid rgba(69, 0, 119, 0.278);
   border-collapse: collapse;
   font-size: 14px;
