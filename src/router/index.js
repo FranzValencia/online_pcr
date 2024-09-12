@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import Dashboard from "@/views/Dashboard.vue";
+import { useAuthStore } from "@/stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +15,14 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
+      beforeEnter: (to, from, next) => {
+        const authStore = useAuthStore(); // Access store inside guard
+        if (authStore.isAuthenticated) {
+          next({ name: "dashboard" });
+        } else {
+          next();
+        }
+      },
       component: () => import("../views/LoginView.vue"),
     },
     {
@@ -22,7 +31,6 @@ const router = createRouter({
       component: Dashboard,
       meta: { requiresAuth: true },
     },
-
     {
       path: "/rsm",
       name: "rsm",

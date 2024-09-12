@@ -1,6 +1,7 @@
 <script setup>
 import axios from "axios";
 import { ref, defineProps, reactive, onMounted } from "vue";
+import MultiSelector from "../MultiSelector.vue";
 
 const props = defineProps(["mfo", "si", "label", "icon"]);
 const visible = ref(false);
@@ -144,7 +145,7 @@ onMounted(() => {
 
       <!-- in-charges -->
       <div class="p-2 w-full">
-        <label class="font-semibold" for="si">Incharge: </label>
+        <!-- <label class="font-semibold" for="si">Incharge: </label>
         <MultiSelect
           v-model="inputs.mi_incharge"
           display="chip"
@@ -154,7 +155,9 @@ onMounted(() => {
           placeholder="Select employee/s in-charge"
           :maxSelectedLabels="3"
           class="w-full md:w-80"
-        />
+        /> -->
+
+        <MultiSelector :selected-personnel="props.si.personnel" />
       </div>
     </form>
     <div class="mt-3 flex justify-end gap-2">

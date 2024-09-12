@@ -1,51 +1,68 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
 
+
 export const useAuthStore = defineStore("auth", () => {
-  const user = ref(null); //computed(() => localStorage.getItem("user"));
-  const isAuthenticated = ref(false); //computed(() => localStorage.getItem("user"));
+  const user = ref(null);
+  const isAuthenticated = ref(false);
+
+  // Initialize authentication state based on local storage
+  function initialize() {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      user.value = JSON.parse(storedUser);
+      isAuthenticated.value = true;
+    }
+  }
+
+  // Call initialize when the store is created
+  initialize();
 
   async function getUser() {
-    await axios.get("/api/user").then((response) => {
+    try {
+      const response = await axios.get("/api/user");
       if (response.data.id) {
-        this.isAuthenticated = true;
-        this.user = response.data;
+        isAuthenticated.value = true;
+        user.value = response.data;
         localStorage.setItem("user", JSON.stringify(response.data));
       }
-    });
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
   }
 
   async function loginUser(username, password) {
-    await axios.get("/sanctum/csrf-cookie").then((response) => {
-      axios
-        .post("/auth/login", {
-          username: username,
-          password: password,
-        })
-        .catch(({ response }) => {
-          // console.log("login error: ", response);
-          this.isAuthenticated = false;
-        })
-        .then((response) => {
-          if (response) {
-            this.isAuthenticated = true;
-            this.user = response.data;
-            localStorage.setItem("user", JSON.stringify(response.data));
-            router.push("/dashboard", { replace: true });
-          }
-        });
-    });
+    try {
+      await axios.get("/sanctum/csrf-cookie");
+      const response = await axios.post("/auth/login", {
+        username: username,
+        password: password,
+      });
+
+      if (response.data) {
+        isAuthenticated.value = true;
+        user.value = response.data;
+        localStorage.setItem("user", JSON.stringify(response.data));
+        router.push({ path: "/dashboard", replace: true });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      isAuthenticated.value = false;
+    }
   }
 
   async function logoutUser() {
-    await axios.post("/auth/logout").then((response) => {
-      localStorage.setItem("user", null);
-      this.isAuthenticated = false;
-      this.user = null;
-      router.push("/", { replace: true });
-    });
+    try {
+      await axios.post("/auth/logout");
+      localStorage.removeItem("user");
+      isAuthenticated.value = false;
+      user.value = null;
+      router.push({ path: "/", replace: true });
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   }
 
   return { user, isAuthenticated, getUser, loginUser, logoutUser };
